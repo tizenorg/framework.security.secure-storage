@@ -1,0 +1,11 @@
+prefix=@PREFIX@
+exec_prefix=@EXEC_PREFIX@
+libdir=@LIB_INSTALL_DIR@
+includedir=@INCLUDEDIR@
+
+Name: secure-storage 
+Description: Secure Storage Package
+Version: @VERSION@
+Requires: openssl
+Libs: -L${libdir} -lss-client
+Cflags: -I${includedir}/secure-storage 
