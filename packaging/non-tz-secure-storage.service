@@ -1,0 +1,12 @@
+[Unit]
+Description=Start the Secure Storage server
+After=csa.mount
+Requires=security-server.socket 
+
+[Service]
+ExecStart=/usr/bin/ss-server
+Restart=always
+RestartSec=0
+
+[Install]
+WantedBy=multi-user.target

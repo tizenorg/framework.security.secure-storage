@@ -1,0 +1,14 @@
+[Unit]
+Description=Start the Secure Storage server
+After=csa.mount samsung-secure-storage.service
+Requires=security-server.service
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/ss-server
+Sockets=ss-server.socket
+Restart=always
+RestartSec=0
+
+[Install]
+WantedBy=multi-user.target

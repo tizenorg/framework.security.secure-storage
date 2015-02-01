@@ -3,8 +3,6 @@
  *
  * Copyright (c) 2000 - 2012 Samsung Electronics Co., Ltd All Rights Reserved 
  *
- * Contact: Kidong Kim <kd0228.kim@samsung.com>
- *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -22,393 +20,434 @@
 #ifndef __SS_MANAGER__
 #define __SS_MANAGER__
 
+#include <tizen.h>
+
+
 /**
+ * @addtogroup CAPI_SECURE_STORAGE_MODULE
  * @{
  */
 
-/**
- * @defgroup	SECURE_STORAGE secure storage
- * @ingroup		SecurityFW
- * @{
- */
 
+/**
+ * @brief Secure Storage default path
+ * @remark This path is deprecated.
+ */
 #define SSM_STORAGE_DEFAULT_PATH	"/opt/share/secure-storage/"
 
 #define DEPRECATED	__attribute__((deprecated))
 
 /**
- * \name Enumeration
+ * @brief Enumeration for SSM data type
+ * @remark This enumeration is deprecated.
  */
 typedef enum {
-	SSM_FLAG_NONE = 0x00,
-	SSM_FLAG_DATA,				// normal data for user (ex> picture, video, memo, etc.)
-	SSM_FLAG_SECRET_PRESERVE,	// for preserved operation
-	SSM_FLAG_SECRET_OPERATION,	// for oma drm , wifi addr, divx and bt addr
-	SSM_FLAG_WIDGET, // for wiget encryption/decryption
-	SSM_FLAG_WEB_APP,
-	SSM_FLAG_PRELOADED_WEB_APP,
+	SSM_FLAG_NONE = 0x00, 		/**< for initial purrpose */
+	SSM_FLAG_DATA,				/**< normal data for user (ex> picture, video, memo, etc.) */
+	SSM_FLAG_SECRET_PRESERVE,	/**< for preserved operation */
+	SSM_FLAG_SECRET_OPERATION,	/**< for oma drm , wifi addr, divx and bt addr */
+	SSM_FLAG_WIDGET, 			/**< for wiget encryption/decryption */
+	SSM_FLAG_WEB_APP, 			/**< for web application encryption/decryption */
+	SSM_FLAG_PRELOADED_WEB_APP, /**< for preloaded application encryption/decryption */
 	SSM_FLAG_MAX
 } ssm_flag;
 
-/**
- * \name Type definition
+/*
+ * @brief Enumeration for SSM data type
+ * @remark This enumeration is deprecated.
  */
-typedef struct {
-	unsigned int	originSize;
-	unsigned int	storedSize;
-	char			reserved[8];
-}ssm_file_info_t;
+typedef enum {
+	SSM_FLAG_WEB_APP_, 			/**< for web application */
+	SSM_FLAG_PRELOADED_WEB_APP_ /**< for preloaded web application */
+} WebFlag;
+
 
 /**
- * \name Error codes
+ * @brief  Parameter error
+ * @remark This Error code is deprecated.
  */
-#define		SS_PARAM_ERROR					0x00000002	// 2
-#define 	SS_FILE_TYPE_ERROR 				0x00000003	// 3
-#define		SS_FILE_OPEN_ERROR				0x00000004	// 4
-#define 	SS_FILE_READ_ERROR				0x00000005	// 5
-//
-#define		SS_FILE_WRITE_ERROR				0x00000006	// 6
-#define		SS_MEMORY_ERROR					0x00000007	// 7
-#define		SS_SOCKET_ERROR					0x00000008	// 8
-#define		SS_ENCRYPTION_ERROR				0x00000009	// 9
-#define		SS_DECRYPTION_ERROR				0x0000000a	// 10
-//
-#define		SS_SIZE_ERROR					0x0000000b	// 11
-#define		SS_SECURE_STORAGE_ERROR			0x0000000c	// 12
-#define		SS_PERMISSION_DENIED			0x0000000d	// 13
-#define		SS_TZ_ERROR						0x0000000e	// 14
+#define		SS_PARAM_ERROR					0x00000002
+/**
+ * @brief  File type error
+ * @remark This Error code is deprecated.
+ */
+#define 	SS_FILE_TYPE_ERROR 				0x00000003
+/**
+ * @brief  File open error
+ * @remark This Error code is deprecated.
+ */
+#define		SS_FILE_OPEN_ERROR				0x00000004
+/**
+ * @brief  File read error
+ * @remark This Error code is deprecated.
+ */
+#define 	SS_FILE_READ_ERROR				0x00000005
+
+/**
+ * @brief  File write error
+ * @remark This Error code is deprecated.
+ */
+#define		SS_FILE_WRITE_ERROR				0x00000006
+/**
+ * @brief  Out of memory
+ * @remark This Error code is deprecated.
+ */
+#define		SS_MEMORY_ERROR					0x00000007
+/**
+ * @brief  Socket error
+ * @remark This Error code is deprecated.
+ */
+#define		SS_SOCKET_ERROR					0x00000008
+/**
+ * @brief  Encryption error
+ * @remark This Error code is deprecated.
+ */
+#define		SS_ENCRYPTION_ERROR				0x00000009
+/**
+ * @brief  Decryption error
+ * @remark This Error code is deprecated.
+ */
+#define		SS_DECRYPTION_ERROR				0x0000000a
+/**
+ * @brief  Data block size error
+ * @remark This Error code is deprecated.
+ */
+#define		SS_SIZE_ERROR					0x0000000b
+/**
+ * @brief  Secure Storage access error
+ * @remark This Error code is deprecated.
+ */
+#define		SS_SECURE_STORAGE_ERROR			0x0000000c
+/**
+ * @brief  Permission denied from security server
+ * @remark This Error code is deprecated.
+ */
+#define		SS_PERMISSION_DENIED			0x0000000d
+/**
+ * @brief  Trust Zone error
+ * @remark This Error code is deprecated.
+ */
+#define		SS_TZ_ERROR						0x0000000e
+
+
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
+typedef enum
+{
+	SSA_PARAM_ERROR = TIZEN_ERROR_SYSTEM_CLASS | 0x01, 			/** < Invalid parameters */
+	SSA_AUTHENTICATION_ERROR = TIZEN_ERROR_SYSTEM_CLASS | 0x02, /** < Authentication error */
+	SSA_TZ_ERROR = TIZEN_ERROR_SYSTEM_CLASS | 0x03,				/** < Trust zone error */
+	SSA_SOCKET_ERROR = TIZEN_ERROR_CONNECTION, 		 			/** < Connection error */
+	SSA_PERMISSION_ERROR = TIZEN_ERROR_PERMISSION_DENIED, 		/** < Permission denied */
+	SSA_SECURITY_SERVER_ERROR = TIZEN_ERROR_SYSTEM_CLASS | 0x04,/** < Security server error */
+	SSA_CIPHER_ERROR = TIZEN_ERROR_SYSTEM_CLASS | 0x05, 		/** < Encryption / Decryption error */
+	SSA_IO_ERROR = TIZEN_ERROR_IO_ERROR, 			 			/** < I/O error */
+	SSA_OUT_OF_MEMORY = TIZEN_ERROR_OUT_OF_MEMORY, 	 			/** < Out of memory */
+	SSA_UNKNOWN_ERROR = TIZEN_ERROR_UNKNOWN, 					/** < Unknown error */
+} ssa_error_e;
+
 /**
- * \name Functions
- */
-/**
- * \par Description:
- * Store encrypted file to secure-storage.
+ * @brief Put application data to Secure Storage by given name.
+ * @remark Input parameters pInDataName, pInDataBlock, pGroupId, pPassword must be static / allocated by user. Maximum used length of user password and group id are 32.
  *
- * \par Purpose:
- * Encrypt file in order not to expose the contents of that file. The encrypted file is stored in specific directory and that file only be read by secure-storage server daemon.
+ * @since_tizen 2.3
+ * @param[in] pDataName 	  Data name to be identify.
+ * @param[in] pInDataBlock    Data block to be stored.
+ * @param[in] pInDataBlockLen Length of data to be put.
+ * @param[in] pGroupId        Sharing group id. (NULL if not used)
+ * @param[in] pPassword       User password to use for encryption. (NULL if not used)
  *
- * \par Typical use case:
- * When user wants to store some file securely, he(or she) can use this API.
+ * @return  Length of stored data block on success or an error code otherwise.
+ * @retval #SSA_PARAM_ERROR 			Invalid input parameter 
+ * @retval #SSA_AUTHENTICATION_ERROR 	Non-authenticated application request
+ * @retval #SSA_TZ_ERROR 				Trust zone error
+ * @retval #SSA_SOCKET_ERROR 			Socket connection failed
+ * @retval #SSA_PERMISSION_ERROR 		Permission error
+ * @retval #SSA_SECURITY_SERVER_ERROR 	Getting smack information failed
+ * @retval #SSA_CIPHER_ERROR 			Encryption failed
+ * @retval #SSA_IO_ERROR 				I/O failed
  *
- * \par Method of function operation:
- * First, encrypt the given file. Then make new file path which will be stored in secure storage. Then store new encrypted file and remove older one.
  *
- * \par Important Notes:
- * - After encryption, original file will be deleted.\n
  *
- * \param[in] pFilePath Absolute file path of original file
- * \param[in] flag Type of stored data (data or secret)
- * \param[in] group_id Sharing group id(string). (NULL if not used)
+ * @see ssa_get()
  *
- * \return Return Type (integer) \n
- * - 0       - Success \n
- * - <0      - Fail \n
- *
- * \par Related functions:
- * None
- *
- * \par Known issues/bugs:
- * None
- *
- * \pre None
- * \post None
- * \see None
- * \remark None
+ * @code
+ * #include <ss_manager.h>
  * 
- * \par Sample code:
- * \code
+ * ...
+ * 
+ * int outLen = -1;
+ * unsigned char dataName[32];
+ * unsigned char* pDataBlock;
+ * unsigned int dataLen;
+ * unsigned char password[32];
+ * unsigned char* pGroupId;
+ *
+ * // Put data name to array dataName
+ * // Put data block to pDataBlock and put its length to dataLen
+ * // Put user password to array password
+ * // Put group id to pGroupId if want share the data
+ *
+ * outLen = ssa_put(dataName, pDataBlock, dataLen, pGroupId, password);
+ * if(outLen < 0)
+ * {
+ * 	  // Error handling
+ * }
+ * // Use dataName to read data block afterwards
+ *
+ * ...
+ * @endcode
+ *
+ */
+int ssa_put(const char* pDataName, const char* pInDataBlock, size_t inDataBlockLen, const char* pGroupId, const char* pPassword);
+
+
+/**
+ * @brief Get application data from Secure Storage by given name.
+ * @remark Input parameters pOutataName, pGroupId, pPassword must be static / allocated by user. Maximum used length of user password and group id are 32
+ *
+ * @since_tizen 2.3
+ * @param[in] pDataName    	  Data name to read.
+ * @param[out] ppOutDataBlock  Containing data get from secure storage. Memory allocated for ppOutDataBlock. So must be freed by the user of this function.
+ * @param[in] pGroupId        Sharing group id. (NULL if not used)
+ * @param[in] pPassword       User password to use for encryption. (NULL if not used)
+ *
+ * @return Length of read data block on success or an error code otherwise.
+ * @retval #SSA_PARAM_ERROR 			Invalid input parameter or no such data by given data name
+ * @retval #SSA_AUTHENTICATION_ERROR 	Non-authenticated application request
+ * @retval #SSA_TZ_ERROR 				Trust zone error
+ * @retval #SSA_SOCKET_ERROR 			Socket connection failed
+ * @retval #SSA_PERMISSION_ERROR 		Permission error
+ * @retval #SSA_SECURITY_SERVER_ERROR 	Getting smack information failed
+ * @retval #SSA_CIPHER_ERROR 			Decryption failed
+ * @retval #SSA_IO_ERROR 				I/O failed
+ *
+ * @see ssa_put()
+ *
+ * @code
+ * #include <ss_manager.h>
+ * 
+ * ...
+ * 
+ * int outLen = -1;
+ * unsigned char dataName[32];
+ * unsigned char* pOutDataBlock;
+ * unsigned char password[32];
+ * unsigned char* pGroupId;
+ *
+ * // Put data name to array dataName
+ * // Put user password to array password
+ * // Put group id to pGroupId if want share the data
+ *
+ * outLen = ssa_get(dataName, &pOutDataBlock, pGroupId, password);
+ * if(outLen < 0)
+ * {
+ * 	  // Error handling
+ * }
+ *
+ * free(pOutDataName);
+ * return;
+ * ...
+ * @endcode
+ *
+ */
+int ssa_get(const char* pDataName, char** ppOutDataBlock, const char* pGroupId, const char* pPassword);
+
+
+/**
+ * @brief Delete application data from Secure Storage by given name.
+ * @remark Input parameters pDataName, pGroupId must be static / allocated by caller. Maximum used length of group id is 32
+ *
+ * @since_tizen 2.3
+ * @param[in] pDataName    Data name to delete
+ * @param[in] pGroupId     Sharing group id. (NULL if not used)
+ *
+ * @return Length of data block on success or an error code otherwise.
+ * @retval #SSA_PARAM_ERROR 			Invalid input parameter or no such data by given data name
+ * @retval #SSA_AUTHENTICATION_ERROR 	Non-authenticated application request
+ * @retval #SSA_TZ_ERROR 				Trust zone error
+ * @retval #SSA_SOCKET_ERROR 			Socket connection failed
+ * @retval #SSA_PERMISSION_ERROR 		Permission error
+ * @retval #SSA_SECURITY_SERVER_ERROR 	Getting smack information failed
+ * @retval #SSA_IO_ERROR 				I/O failed
+ *
+ * @pre The application data have to put before using this API by ssa_put()
+ * @see ssa_put()
+ *
+ * @code
  * #include <ss_manager.h>
  * 
  * ...
  * 
  * int ret = -1;
- * char* infilepath = "/opt/test/test.txt";
- * ssm_flag flag = SSM_FLAG_DATA;
+ * unsigned char dataName[32];
+ * unsigned char* pGroupId;
  *
- * ret = ssm_write_file(infilepath, flag, NULL);
+ * // Put data name to array dataName
+ * // Put group id to pGroupId if want share the data
  *
- * return ret; // in case of success, return 0. Or fail, return corresponding error code.
- * 
+ * ret = ssa_delete(dataName, pGroupId);
+ * if(ret < 0)
+ * {
+ * 	  // Error handling
+ * }
+ *
+ * return;
  * ...
- * \endcode
+ * @endcode
  *
  */
-/*================================================================================================*/
-int ssm_write_file(const char* pFilePath, ssm_flag flag, const char* group_id);
+int ssa_delete(const char* pDataName, const char* pGroupId);
+
 
 /**
- * \par Description:
- * Store encrypted file to secure-storage (Original data is in memory buffer).
+ * @brief Encrypt application data using Secure Storage.
+ * @remark Input parameters pInDataBlock, pPassword must be static / allocated by caller. Maximum used length of password is 32
  *
- * \par Purpose:
- * Encrypt buffer in order not to expose the contents of that buffer. The encrypted file is stored in specific directory and that file only be read by secure-storage server daemon.
+ * @since_tizen 2.3
+ * @param[in] pInDataBlock   Data block to be encrypted.
+ * @param[in] inDataBlockLen Length of data block to be encrypted.
+ * @param[out] ppOutDataBlock Data block contaning encrypted data block. Memory allocated for ppOutDataBlock. So must be freed user of this function.
+ * @param[in] pPassword      User password to use for encryption. (NULL if not used)
  *
- * \par Typical use case:
- * When user wants to store some buffer contents securely, he(or she) can use this API.
+ * @return Length of encrypted data block on success or an error code otherwise.
+ * @retval #SSA_PARAM_ERROR 			Invalid input parameter
+ * @retval #SSA_AUTHENTICATION_ERROR 	Non-authenticated application request
+ * @retval #SSA_TZ_ERROR 				Trust zone error
+ * @retval #SSA_SOCKET_ERROR 			Socket connection failed
+ * @retval #SSA_PERMISSION_ERROR 		Permission error
+ * @retval #SSA_SECURITY_SERVER_ERROR 	Getting smack information failed
  *
- * \par Method of function operation:
- * First, encrypt the given buffer contents. Then make new file path which will be stored in secure storage. Then store new encrypted file.
+ * @see ssa_decrypt()
  *
- * \par Important Notes:
- * None
- *
- * \param[in] pWriteBuffer Data buffer to be stored in secure storage
- * \param[in] bufLen Data size of buffer
- * \param[in] pFileName File name be used when stored. Only file name, not a path
- * \param[in] flag Type of stored data (data or secret)
- * \param[in] group_id Sharing group id(string). (NULL if not used)
- *
- * \return Return Type (integer) \n
- * - 0       - Success \n
- * - <0      - Fail \n
- *
- * \par Related functions:
- * None
- *
- * \par Known issues/bugs:
- * None
- *
- * \pre None
- * \post None
- * \see None
- * \remark None
- *
- * \par Sample code:
- * \code
+ * @code
  * #include <ss_manager.h>
  * 
  * ...
  * 
- * int ret = -1;
- * char buf[27] = "abcdefghijklmnopqrstuvwxyz";
- * int buflen = strlen(buf);
- * char* filename = write_buf.txt;
- * ssm_flag flag = SSM_FLAG_SECRET_OPERATION;
+ * int len = -1;
+ * unsigned char* pDataBlock;
+ * unsigned int dataBlockLen;
+ * unsigned char* pOutDataBlock;
+ * unsigned char pPassword[32];
  *
- * ret = ssm_write_buffer(buf, buflen, filename, flag, NULL);
+ * // Put data block to pDataBlock and put its length to dataBlockLen
+ * // Put user password to array pPassword
  *
- * return ret; // in case of success, return 0. Or fail, return corresponding error code.
- * 
+ * len = ssa_encrypt(pDataBlock, dataBlockLen, &pOutDataBlock, pPassword);
+ * if(len < 0)
+ * {
+ * 	  // Error handling
+ * }
+ *
  * ...
- * \endcode
+ * free(pOutDataBlock);
+ * @endcode
  *
  */
-/*================================================================================================*/
-int ssm_write_buffer(char* pWriteBuffer, size_t bufLen, const char* pFileName, ssm_flag flag, const char* group_id);
+int ssa_encrypt(const char* pInDataBlock, size_t inDataBlockLen, char** ppOutDataBlock, const char* pPassword);
+
 
 /**
- * \par Description:
- * Decrypt encrypted file into memory buffer.
+ * @brief Decrypt application data using Secure Storage.
+ * @remark Input parameters pInDataBlock, pPassword must be static / allocated by caller. Maximum used length of password is 32
  *
- * \par Purpose:
- * Read encrypted file which be stored in secure storage. Decrypted contents are only existed in the form of memory buffer, not file.
+ * @since_tizen 2.3
+ * @param[in] pInDataBlock   Data block contained encrypted data from ssa_encrypt.
+ * @param[in] inDataBlockLen Length of data block to be decrypted.
+ * @param[out] ppOutDataBlock Data block contaning decrypted data block. Memory allocated for ppOutDataBlock. So must be freed user of this function.
+ * @param[in] pPassword      User password to use for decryption. (NULL if not used)
  *
- * \par Typical use case:
- * When user wants to know the contents which be stored in secure storage, he(or she) can use this API.
+ * @return Length of decrypted data block on success or an error code otherwise.
+ * @retval #SSA_PARAM_ERROR 			Invalid input parameter
+ * @retval #SSA_AUTHENTICATION_ERROR 	Non-authenticated application request
+ * @retval #SSA_TZ_ERROR 				Trust zone error
+ * @retval #SSA_SOCKET_ERROR 			Socket connection failed
+ * @retval #SSA_PERMISSION_ERROR 		Permission error
+ * @retval #SSA_SECURITY_SERVER_ERROR 	Getting smack information failed
  *
- * \par Method of function operation:
- * First, read the file which be in secure storage. Then decrypt that file and store to memory buffer. Then return that buffer.
+ * @see ssa_encrypt()
  *
- * \par Important Notes:
- * - flag must be same with the one of stored data.\n
- * - pFilePath can be either absolute path or file name.\n
- * - pRetBuf is JUST pointer. User allocates memory buffer and passes a pointer.\n
- * - not uses sting function, but uses memory function (not strcpy, strlen, ... use memcpy, memset, ...).\n
- *
- * \param[in] pFilePath File name or path to be read in secure storage
- * \param[in] bufLen Length of data to be read
- * \param[in] flag Type of stored data (data or secret)
- * \param[out] readLen Length of data that this function read
- * \param[out] pRetBuf Buffer for decrypted data
- * \param[in] group_id Sharing group id(string). (NULL if not used)
- *
- * \return Return Type (integer) \n
- * - 0       - Success \n
- * - <0      - Fail \n
- *
- * \par Related functions:
- * ssm_get_info() - use in order to know file size
- *
- * \par Known issues/bugs:
- * None
- *
- * \pre None
- * \post None
- * \see None
- * \remark None
- *
- * \par Sample code:
- * \code
+ * @code
  * #include <ss_manager.h>
  * 
  * ...
  * 
- * int ret = -1;
- * char *filepath = "/opt/test/input.txt";
- * int buflen = 128;
- * ssm_flag flag = SSM_FLAG_DATA;
- * char* retbuf = NULL;
- * int readlen = 0;
- * ssm_file_info_t sfi;
+ * int len = -1;
+ * unsigned char* pDataBlock;
+ * unsigned int dataBlockLen;
+ * unsigned char* pOutDataBlock;
+ * unsigned char pPassword[32];
  *
- * ssm_getinfo(filepath, &sfi, SSM_FLAG_DATA);
- * retbuf = (char*)malloc(sizeof(char) * (sfi.originSize + 1));
- * memset(retbuf, 0x00, (sfi.originSize + 1));
+ * // Put data block to pDataBlock and put its length to dataBlockLen
+ * // Put user password to array pPassword
  *
- * ret = ssm_read(filepath, retbuf, sfi.originSize, &readlen, SSM_FLAG_DATA, NULL);
- * free(retbuf);
- * 
- * return ret; // in case of success, return 0. Or fail, return corresponding error code.
- * 
+ * len = ssa_decrypt(pDataBlock, dataBlockLen, &pOutDataBlock, pPassword);
+ * if(len < 0)
+ * {
+ * 	  // Error handling
+ * }
+ *
  * ...
- * \endcode
+ * free(pOutDataBlock);
+ * @endcode
  *
  */
-/*================================================================================================*/
-int ssm_read(const char* pFilePath, char* pRetBuf, size_t bufLen, size_t *readLen, ssm_flag flag, const char* group_id);
+int ssa_decrypt(const char* pInDataBlock, size_t inDataBlockLen, char** ppOutDataBlock, const char* pPassword);
+
 
 /**
- * \par Description:
- * Get information of data which will be read.
+ * @brief Encrypt web application data using Secure Storage.
  *
- * \par Purpose:
- * Use in order to know file statistic information of encrypted file, original file size and encrypted file size.
+ * @since_tizen 2.3
+ * @param[in] pAppId   The application id.
+ * @param[in] idLen    Length of application id.
+ * @param[in] pData    Data block to be encrypted.
+ * @param[in] dataLen  Length of data block.
+ * @param[out] ppEncryptedData Data block contaning encrypted data block. Memory allocated for ppEncryptedData. So must be freed user of this function.
+ * @param[in] isPreloaded True if the application is preloaded else false.
  *
- * \par Typical use case:
- * When using ssm_read API, user should know the size of original size of encrypted file. In that case, he(or she) can use this API.
+ * @return Length of encrypted data block on success or an error code otherwise.
+ * @retval #SSA_PARAM_ERROR 			Invalid input parameter
+ * @retval #SSA_AUTHENTICATION_ERROR 	Non-authenticated application request
+ * @retval #SSA_TZ_ERROR 				Trust zone error
+ * @retval #SSA_SOCKET_ERROR 			Socket connection failed
+ * @retval #SSA_PERMISSION_ERROR 		Permission error
+ * @retval #SSA_SECURITY_SERVER_ERROR 	Getting smack information failed
  *
- * \par Method of function operation:
- * When encrypting some file, information regarding size of file are saved with encrypted file. In this API, returns that information.
- *
- * \par Important Notes:
- * None
- *
- * \param[in] pFilePath File name or path of file
- * \param[in] flag Type of stored data (data or secret)
- * \param[out] sfi Structure of file information
- * \param[in] group_id Sharing group id(string). (NULL if not used)
- *
- * \return Return Type (integer) \n
- * - 0       - Success \n
- * - <0      - Fail \n
- *
- * \par Related functions:
- * ssm_read()
- *
- * \par Known issues/bugs:
- * None
- *
- * \pre None
- * \post None
- * \see None
- * \remark None
- *
- * \par Sample code:
- * \code
- * #include <ss_manager.h>
- * 
- * ...
- * 
- * int ret = -1;
- * char *filepath = "/opt/secure-storage/test/input.txt";
- * ssm_flag flag = SSM_FLAG_DATA;
- * ssm_file_info_t sfi;
- *
- * ret = ssm_getinfo(filepath, &sfi, flag, NULL);
- * 
- * printf(" ** original size: [%d]\n", sfi.originSize);
- * printf(" ** stored size:   [%d]\n", sfi.storedSize);
- * printf(" ** reserved:      [%s]\n", sfi.reserved);
- *
- * return ret; // in case of success, return 0. Or fail, return corresponding error code.
- * 
- * ...
- * \endcode
- *
+ * @see ssa_decrypt_web_application()
  */
-/*================================================================================================*/
-int ssm_getinfo(const char* pFilePath, ssm_file_info_t* sfi, ssm_flag flag, const char* group_id);
+int ssa_encrypt_web_application(const char* pAppId, int idLen, const char* pData, int dataLen, char** ppEncryptedData, int isPreloaded);
+
 
 /**
- * \par Description:
- * Delete encrypted file in Secure-storage.
+ * @brief Encrypt web application data using Secure Storage.
  *
- * \par Purpose:
- * The Secure-storage is the special place, which only ss-server daemon can access. Therefore, in order to delete file, process requests to ss-server.
+ * @since_tizen 2.3
+ * @param[in] pAppId   The application id.
+ * @param[in] idLen    Length of application id.
+ * @param[in] pData    Data block to be encrypted.
+ * @param[in] dataLen  Length of data block.
+ * @param[out] ppEncryptedData Data block contaning encrypted data block. Memory allocated for ppEncryptedData. So must be freed user of this function.
+ * @param[in] isPreloaded True if the application is preloaded else false.
  *
- * \par Typical use case:
- * When user wants to delete specific file, he(or she) can use this API.
+ * @return Length of encrypted data block on success or an error code otherwise.
+ * @retval #SSA_PARAM_ERROR 			Invalid input parameter
+ * @retval #SSA_AUTHENTICATION_ERROR 	Non-authenticated application request
+ * @retval #SSA_TZ_ERROR 				Trust zone error
+ * @retval #SSA_SOCKET_ERROR 			Socket connection failed
+ * @retval #SSA_PERMISSION_ERROR 		Permission error
+ * @retval #SSA_SECURITY_SERVER_ERROR 	Getting smack information failed
  *
- * \par Method of function operation:
- * All files in secure-storage have unique name. Process will request to delete some file, then ss-server deletes that.
- *
- * \par Important Notes:
- * None
- *
- * \param[in] pFilePath File path
- * \param[in] flag Type of stored data (data or secret)
- * \param[in] group_id Sharing group id(string). (NULL if not used)
- *
- * \return Return Type (integer) \n
- * - 0       - Success \n
- * - <0      - Fail \n
- *
- * \par Related functions:
- * None
- *
- * \par Known issues/bugs:
- * None
- *
- * \pre None
- * \post None
- * \see None
- * \remark None
- *
- * \par Sample code:
- * \code
- * #include <ss_manager.h>
- * 
- * ...
- * 
- * int ret = -1;
- * char *infilepath = "res_write_buf.txt";
- * ssm_flag flag = SSM_FLAG_SECRET_OPERATION;
- *
- * ret = ssm_delete_file(infilepath, flag, NULL);
- *
- * return ret; // in case of success, return 0. Or fail, return corresponding error code.
- *
- * ...
- * \endcode
- *
+ * @see ssa_decrypt_web_application()
  */
-/*================================================================================================*/
-int ssm_delete_file(const char* pFilePath, ssm_flag flag, const char* group_id);
-
-//for wrt installer
-/*================================================================================================*/
-int ssm_encrypt(const char* pAppId, int idLen, const char* pBuffer, int bufLen, char** ppEncryptedBuffer, int* pEncryptedBufLen);
-int ssm_decrypt(const char* pAppId, int idLen, const char* pBuffer, int bufLen, char** ppDecryptedBuffer, int* pDecryptedBufLen);
-
-int ssm_encrypt_preloaded_application(const char* pBuffer, int bufLen, char** ppEncryptedBuffer, int* pEncryptedBufLen);
-int ssm_decrypt_preloaded_application(const char* pBuffer, int bufLen, char** ppDecryptedBuffer, int* pDecryptedBufLen); 
-
+int ssa_decrypt_web_application(const char* pData, int dataLen, char** ppDecryptedData, int isPreloaded);
 
 #ifdef __cplusplus
 }
 #endif
-
-/**
- * @}
- */
-
-/**
- * @}
- */
 
 #endif
