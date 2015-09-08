@@ -4,4 +4,4 @@ all
 
 # Test scenario
 TEST
-	:include:/scenario1/tslist
+	:include:/testcase/tslist

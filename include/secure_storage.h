@@ -1,9 +1,7 @@
 /*
  * secure storage
  *
- * Copyright (c) 2000 - 2011 Samsung Electronics Co., Ltd All Rights Reserved 
- *
- * Contact: Kidong Kim <kd0228.kim@samsung.com>
+ * Copyright (c) 2000 - 2012 Samsung Electronics Co., Ltd All Rights Reserved 
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,13 +24,24 @@
 
 #define	SS_SOCK_PATH			"/tmp/SsSocket"
 
-#define		MAX_FILENAME_LEN	256	// for absolute path
-#define 	MAX_RECV_DATA_LEN	4096	// internal buffer = 4KB
-#define 	MAX_SEND_DATA_LEN	4096	// internal buffer = 4KB
-#define		MAX_GROUP_ID_LEN	32
-#define		MAX_COOKIE_LEN		20
+#define		MAX_FILENAME_SIZE	256	// for absolute path
+#define 	MAX_RECV_DATA_SIZE	4096	// internal buffer = 4KB
+#define 	MAX_SEND_DATA_SIZE	4096	// internal buffer = 4KB
+#define		MAX_GROUP_ID_SIZE	32
 
 #define SS_STORAGE_DEFAULT_PATH		"/opt/share/secure-storage/"
+
+#define MAX_APPID_SIZE	32
+#define	MAX_PASSWORD_SIZE 32
+#define KEY_SIZE		16
+#define SALT_SIZE		400
+#define SALT_NAME	"salt"
+#define HASH_SIZE	20
+#define DUK_NAME	"duk"
+#define SALT_PATH "/opt/share/secure-storage/salt/salt"
+#define DELIMITER	"::"
+#define DELIMITER_SIZE	2
+#define PRE_GROUP_ID 	"secure-storage::"
 
 /* using dlog */
 #ifdef SS_DLOG_USE
@@ -62,27 +71,34 @@
 
 #define	SS_FILE_POSTFIX			".e"
 
+
+typedef struct {
+	unsigned int 	originSize;
+	unsigned int 	storedSize;
+	char 			reserved[8];
+}ssm_file_info_t;
+
 typedef union {
 	ssm_file_info_t fInfoStruct;
-	char		fInfoArray[16];
-} ssm_file_info_convert_t;
+	char 			fInfoArray[16];
+}ssm_file_info_convert_t;
 
 typedef struct {
 	int				req_type;
 	int				enc_type;
 	unsigned int	count; 	// 1 count = 4KB
    	unsigned int	flag;	
-	char			data_infilepath[MAX_FILENAME_LEN];
-	char			buffer[MAX_SEND_DATA_LEN+1];
-	char			group_id[MAX_GROUP_ID_LEN];
-	char			cookie[MAX_COOKIE_LEN];
+	char			data_infilepath[MAX_FILENAME_SIZE+1]; // string
+	char			buffer[MAX_SEND_DATA_SIZE+1];
+	char			group_id[MAX_GROUP_ID_SIZE+1]; // string
 } ReqData_t;
 
 typedef struct {
 	int				rsp_type;
 	unsigned int	readLen;
-	char			data_filepath[MAX_FILENAME_LEN];
-	char			buffer[MAX_RECV_DATA_LEN+1];
+	char			data_filepath[MAX_FILENAME_SIZE+1]; // string
+	char			buffer[MAX_RECV_DATA_SIZE];
 } RspData_t;
 
-#endif
+
+#endif // __SECURE_STORAGE__
