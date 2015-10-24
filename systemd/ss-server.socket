@@ -1,0 +1,12 @@
+[Socket]
+ListenStream=/tmp/SsSocket
+SocketUser=system
+SocketGroup=system
+SocketMode=0777
+SmackLabelIPIn=*
+SmackLabelIPOut=@
+
+Service=secure-storage.service
+
+[Install]
+WantedBy=sockets.target

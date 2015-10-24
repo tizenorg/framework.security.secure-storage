@@ -1,0 +1,14 @@
+[Unit]
+Description=Start the Secure Storage server
+Requires=security-server-privilege-by-pid.socket
+After=csa.mount
+
+[Service]
+ExecStart=/usr/bin/ss-server
+User=system
+Group=system
+SmackProcessLabel=secure-storage
+Sockets=ss-server.socket
+
+[Install]
+WantedBy=multi-user.target

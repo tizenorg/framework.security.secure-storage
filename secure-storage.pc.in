@@ -1,11 +1,11 @@
-prefix=@PREFIX@
-exec_prefix=@EXEC_PREFIX@
-libdir=@LIBDIR@
-includedir=@INCLUDEDIR@
+prefix=@CMAKE_INSTALL_PREFIX@
+exec_prefix=${prefix}
+libdir=${prefix}/lib
+includedir=${prefix}/include
 
 Name: secure-storage 
 Description: Secure Storage Package
 Version: @VERSION@
-Requires: openssl
+Requires: openssl capi-base-common
 Libs: -L${libdir} -lss-client
-Cflags: -I${includedir}/secure-storage 
+Cflags: -I${includedir}/secure-storage

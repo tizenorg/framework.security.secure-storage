@@ -1,0 +1,33 @@
+<manifest>
+	<define>
+		<domain name="secure-storage"/>
+		<provide>
+			<label name="secure-storage::tethering"/>
+			<label name="secure-storage::activesync"/>
+			<label name="secure-storage::pkcs12"/>
+			<label name="secure-storage::divx-fragment"/>
+			<label name="secure-storage::oma-key"/>
+			<label name="secure-storage::google-sync"/>
+			<label name="secure-storage::facebook"/>
+			<label name="secure-storage::telephony_sim"/>
+			<label name="secure-storage::email-service"/>
+			<label name="secure-storage::fus"/>
+			<label name="secure-storage::magazine"/>
+			<label name="secure-storage::rulog"/>
+		</provide>
+		<request>
+			<smack request="security-server::api-privilege-by-pid" type="w"/>
+			<smack request="device::app_logging" type="rw"/>
+			<smack request="device::sys_logging" type="rw"/>
+		</request>
+        <permit>
+            <smack permit="org.tizen.setting" type="w"/>
+        </permit>
+	</define>
+	<assign>
+		<filesystem path="/opt/share/secure-storage" label="secure-storage" type="transmutable" />
+	</assign>
+	<request>
+		<domain name="secure-storage"/>
+	</request>
+</manifest>
